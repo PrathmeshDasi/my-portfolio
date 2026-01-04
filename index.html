@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDCAT_SEC | Elite Offensive Security Researcher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #ef4444; --bg: #0b0d11; --glass: rgba(30, 41, 59, 0.4); }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: #cbd5e1; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Layout Elements */
+        .glass { background: var(--glass); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass:hover { border-color: rgba(239, 68, 68, 0.3); background: rgba(30, 41, 59, 0.6); transform: translateY(-4px); }
+        .scanline { width: 100%; height: 2px; background: rgba(239, 68, 68, 0.1); position: fixed; z-index: 999; pointer-events: none; animation: scan 8s linear infinite; }
+        @keyframes scan { from { top: -10%; } to { top: 110%; } }
+
+        /* Custom Input Styling */
+        input, textarea { background: rgba(0,0,0,0.3) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; transition: all 0.3s ease; }
+        input:focus, textarea:focus { border-color: var(--accent) !important; outline: none !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.1); }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0b0d11; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        .glow-text { text-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+    </style>
+</head>
+<body class="bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+    <div class="scanline"></div>
+
+    <nav class="fixed top-0 w-full z-[100] border-b border-white/5 bg-black/60 backdrop-blur-2xl">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="mono font-extrabold text-red-500 text-xl flex items-center gap-3">
+                <span class="animate-pulse">●</span> REDCAT_ENGINE
+            </div>
+            <div class="hidden xl:flex gap-10 text-[10px] mono uppercase tracking-widest text-gray-400">
+                <a href="#hero" class="hover:text-red-500 transition">01//INIT</a>
+                <a href="#achievements" class="hover:text-red-500 transition">02//RECORDS</a>
+                <a href="#checklist" class="hover:text-red-500 transition">03//CHECKLIST</a>
+                <a href="#intel" class="hover:text-red-500 transition">04//INTEL</a>
+                <a href="#contact" class="px-4 py-2 bg-red-500/10 border border-red-500/50 text-red-500 rounded hover:bg-red-500 hover:text-white transition">05//CONNECT</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 pt-48">
+
+        <section id="hero" class="min-h-[70vh] mb-40">
+            <div class="flex flex-col lg:flex-row gap-16 items-start">
+                <div class="flex-1">
+                    <p class="mono text-red-500 mb-6 font-bold tracking-[0.3em]">// AUTHENTICATED_SESSION_ACTIVE</p>
+                    <h1 class="text-7xl lg:text-9xl font-extrabold text-white mb-8 tracking-tighter leading-[0.85] glow-text">
+                        Defending <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-red-400 to-orange-400">Digital Assets.</span>
+                    </h1>
+                    <p class="text-gray-400 text-xl max-w-2xl leading-relaxed border-l-4 border-red-500 pl-8 py-2">
+                        Independent Security Researcher and Bug Bounty Hunter. I specialize in identifying high-impact 
+                        vulnerabilities in enterprise web architecture and cloud infrastructure.
+                    </p>
+                    <div class="mt-12 flex gap-4">
+                        <a href="#achievements" class="bg-red-600 text-white px-8 py-4 rounded-full font-bold hover:bg-red-500 transition flex items-center gap-2">
+                            VIEW_RECORDS <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+                        </a>
+                        <a href="#contact" class="px-8 py-4 border border-white/10 rounded-full font-bold hover:bg-white/5 transition uppercase text-xs tracking-widest flex items-center">Request_Audit</a>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/3 glass p-8 rounded-[2rem] border-red-500/20">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-500">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white uppercase text-xs">Security Stack</h4>
+                            <p class="text-[10px] mono text-gray-500">LATEST_SCAN: OK</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[10px] mono uppercase"><span>Web Testing</span> <span>98%</span></div>
+                            <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden"><div class="bg-red-500 h-full w-[98%]"></div></div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[10px] mono uppercase"><span>Automation (Go/Python)</span> <span>85%</span></div>
+                            <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden"><div class="bg-red-500 h-full w-[85%]"></div></div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[10px] mono uppercase"><span>API Exploitation</span> <span>92%</span></div>
+                            <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden"><div class="bg-red-500 h-full w-[92%]"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements" class="mb-56 scroll-mt-32">
+            <h2 class="text-4xl font-bold text-white mb-2 italic">Operation History</h2>
+            <p class="mono text-gray-500 mb-16 text-sm">Verified high-impact findings and bounty successes</p>
+
+            <div class="grid grid-cols-1 gap-10">
+                <div class="glass p-12 rounded-[3rem] border-l-8 border-red-500">
+                    <div class="flex flex-col lg:flex-row gap-12">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-4 mb-6">
+                                <span class="bg-red-500 text-white px-3 py-1 rounded text-[10px] font-bold mono">CRITICAL</span>
+                                <span class="mono text-gray-500 text-[10px]">ID: VULN-2025-0914</span>
+                            </div>
+                            <h3 class="text-4xl font-extrabold text-white mb-6">Sensitive Data Exposure via WordPress Debug Logs</h3>
+                            <p class="text-gray-400 text-lg leading-relaxed mb-8">
+                                During a focused audit of a Fortune 500's public infrastructure, I identified an misconfigured production environment leaking <code class="bg-black/50 p-1 text-red-400">debug.log</code> files. 
+                                This exposure included active database queries, user session hashes, and internal server paths.
+                            </p>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                    <div class="mono text-[10px] text-gray-500 uppercase">Impact</div>
+                                    <div class="text-white font-bold">PII Leak</div>
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                    <div class="mono text-[10px] text-gray-500 uppercase">Bounty</div>
+                                    <div class="text-red-500 font-bold">$1,014</div>
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                    <div class="mono text-[10px] text-gray-500 uppercase">Status</div>
+                                    <div class="text-green-500 font-bold italic">Resolved</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:w-1/3 bg-black/40 rounded-2xl p-6 border border-white/5">
+                            <h4 class="mono text-xs text-white mb-4">// TECHNICAL_STEPS</h4>
+                            <ul class="text-[11px] mono space-y-3 text-gray-500">
+                                <li>1. ASSET_DISCOVERY (Amass/Subfinder)</li>
+                                <li>2. FUZZING_HIDDEN_DIR (FFUF)</li>
+                                <li>3. CONTENT_ANALYSIS (Custom Script)</li>
+                                <li>4. EXPLOITATION_VERIFICATION</li>
+                                <li>5. RESPONSIBLE_DISCLOSURE</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="checklist" class="mb-56 scroll-mt-32">
+            <h2 class="text-4xl font-bold text-white mb-12">Deep VAPT Checklist <span class="text-gray-600 font-light text-xl">/ 120+ Test Cases</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass p-8 rounded-2xl border-t-2 border-red-500">
+                    <h4 class="mono text-red-500 font-bold mb-6 text-sm flex items-center justify-between">
+                        01. RECONNAISSANCE <span>[50%]</span>
+                    </h4>
+                    <ul class="space-y-4 text-xs text-gray-400 mono">
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Subdomain Enum (Active/Passive)</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Port Scanning & Banner Grabbing</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Technology Stack Profiling</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> DNS Records Analysis (DMARC/SPF)</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Cloud Asset Discovery (S3/Blobs)</li>
+                    </ul>
+                </div>
+                <div class="glass p-8 rounded-2xl border-t-2 border-orange-500">
+                    <h4 class="mono text-orange-500 font-bold mb-6 text-sm flex items-center justify-between">
+                        02. AUTHENTICATION <span>[90%]</span>
+                    </h4>
+                    <ul class="space-y-4 text-xs text-gray-400 mono">
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Brute Force / Rate Limiting Bypass</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> 2FA/MFA Logic Flaws</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Password Reset Link Manipulation</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Session Fixation & Hijacking</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> OAuth2 Implementation Errors</li>
+                    </ul>
+                </div>
+                <div class="glass p-8 rounded-2xl border-t-2 border-cyan-500">
+                    <h4 class="mono text-cyan-500 font-bold mb-6 text-sm flex items-center justify-between">
+                        03. INJECTION <span>[100%]</span>
+                    </h4>
+                    <ul class="space-y-4 text-xs text-gray-400 mono">
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> SQLi (Error-based / Blind)</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Cross-Site Scripting (Stored/DOM)</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Server Side Request Forgery (SSRF)</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> OS Command Injection</li>
+                        <li class="flex items-start gap-2"><input type="checkbox" checked disabled class="mt-1"> Template Injection (SSTI)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="intel" class="mb-56 scroll-mt-32">
+            <div class="flex items-center justify-between mb-12">
+                <h2 class="text-4xl font-bold text-white italic tracking-tighter">Global Threat Intel</h2>
+                <div class="bg-red-500/10 text-red-500 px-4 py-1 rounded-full text-[10px] mono border border-red-500/20">LIVE_MONITOR_ON</div>
+            </div>
+            <div class="space-y-4">
+                <div class="glass p-8 rounded-3xl border-l-4 border-transparent hover:border-red-500 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div>
+                        <span class="mono text-xs text-red-500 font-bold">[ CRITICAL ]</span>
+                        <h4 class="text-xl font-bold text-white mt-1">Massive Move-It Zero-Day Exploitation 2026</h4>
+                        <p class="text-gray-500 text-sm font-mono mt-2">New techniques bypass previous patches via a novel SQLi vector in the file-transfer engine.</p>
+                    </div>
+                    <span class="text-[10px] mono text-gray-600 bg-white/5 px-4 py-2 rounded-lg">JAN_04_2026</span>
+                </div>
+                <div class="glass p-8 rounded-3xl border-l-4 border-transparent hover:border-cyan-500 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6 opacity-60">
+                    <div>
+                        <span class="mono text-xs text-cyan-500 font-bold">[ ADVISORY ]</span>
+                        <h4 class="text-xl font-bold text-white mt-1">Chrome Release 144 Patch Security Fixes</h4>
+                        <p class="text-gray-500 text-sm font-mono mt-2">Remediation of 3 High-severity V8 engine memory corruption bugs discovered by researchers.</p>
+                    </div>
+                    <span class="text-[10px] mono text-gray-600 bg-white/5 px-4 py-2 rounded-lg">JAN_02_2026</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="infra" class="py-32 border-t border-white/5">
+    <div class="flex flex-col lg:flex-row gap-16">
+        <div class="lg:w-1/3">
+            <h2 class="text-4xl font-bold text-white mb-6">Attack <span class="text-red-500">Infra</span></h2>
+            <p class="text-gray-500 text-sm leading-relaxed mb-8 mono">
+                // Setup for covert operations and persistent access. 
+                Focusing on redirectors, automated delivery, and encrypted egress.
+            </p>
+            <div class="space-y-4">
+                <div class="p-4 glass rounded-xl border-l-2 border-red-500">
+                    <h4 class="text-xs font-bold text-white uppercase">Tier 1: Redirectors</h4>
+                    <p class="text-[10px] text-gray-500 mt-1">Using Nginx & Apache mod_rewrite to filter incoming traffic and hide the Teamserver IP.</p>
+                </div>
+                <div class="p-4 glass rounded-xl border-l-2 border-gray-700">
+                    <h4 class="text-xs font-bold text-white uppercase">Tier 2: C2 Server</h4>
+                    <p class="text-[10px] text-gray-500 mt-1">Hosting Cobalt Strike / Havoc Frameworks on hardened Debian instances.</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex-1 bg-black/40 rounded-[2rem] p-8 border border-white/5 relative overflow-hidden">
+            <div class="mono text-[10px] text-red-500/50 mb-4">MAP_VISUALIZATION_v2.0</div>
+            
+            <div class="grid grid-cols-2 gap-4 mt-8">
+                <div class="mono text-[11px] text-gray-400 p-4 border border-white/5 rounded-lg">
+                    <span class="text-red-500 font-bold"># OPSEC_PROTOCOL_01:</span><br>
+                    Ensure all C2 traffic is encapsulated in HTTPS/TLS 1.3 with valid domain fronting or reputable aged domains.
+                </div>
+                <div class="mono text-[11px] text-gray-400 p-4 border border-white/5 rounded-lg">
+                    <span class="text-red-500 font-bold"># OPSEC_PROTOCOL_02:</span><br>
+                    Implement IP-based whitelisting on redirectors to only allow traffic from the target organization's CIDR ranges.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="kb" class="py-32 border-t border-white/5">
+    <h2 class="text-3xl font-bold text-white mb-12 italic">Offensive Research Archive</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass p-8 rounded-3xl">
+            <div class="flex justify-between mb-4">
+                <span class="text-xs mono text-red-500 font-bold">WEB_VULN_01</span>
+                <span class="text-[10px] mono text-gray-600">CVE-ID: RECENT_0DAY_REF</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4">Server-Side Request Forgery (SSRF)</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-6 italic">Exploiting internal trust relationships to access metadata services (AWS/GCP/Azure) and internal APIs.</p>
+            <div class="bg-black/80 p-4 rounded-lg mono text-[10px] text-gray-400 mb-4">
+                <span class="text-red-400">// Malicious Payload</span><br>
+                GET /api/proxy?url=http://169.254.169.254/latest/meta-data/iam/security-credentials/admin-role
+            </div>
+            <div class="bg-green-500/5 p-4 rounded-lg border border-green-500/10 mono text-[10px] text-green-500/80">
+                <span class="font-bold">// Mitigation:</span> Implement strict egress allow-lists & avoid passing user input directly into network client calls.
+            </div>
+        </div>
+
+        <div class="glass p-8 rounded-3xl">
+            <div class="flex justify-between mb-4">
+                <span class="text-xs mono text-red-500 font-bold">WEB_VULN_02</span>
+                <span class="text-[10px] mono text-gray-600">CWE-ID: 79_XSS</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4">Stored XSS in User Profiles</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-6 italic">Bypassing client-side sanitization to execute persistent JavaScript in the context of other users' sessions.</p>
+            <div class="bg-black/80 p-4 rounded-lg mono text-[10px] text-gray-400 mb-4">
+                <span class="text-red-400">// Payload Bypass</span><br>
+                &lt;svg/onload=confirm(document.domain)&gt;
+            </div>
+            <div class="bg-green-500/5 p-4 rounded-lg border border-green-500/10 mono text-[10px] text-green-500/80">
+                <span class="font-bold">// Mitigation:</span> Enforce strict Content Security Policy (CSP) and use Context-Aware Output Encoding.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="roadmap" class="py-32 border-t border-white/5">
+    <h2 class="text-3xl font-bold text-white mb-16 text-center tracking-tighter uppercase">Mission <span class="text-red-600">Objectives</span></h2>
+    <div class="relative">
+        <div class="absolute left-1/2 -translate-x-1/2 h-full w-[1px] bg-white/5 hidden md:block"></div>
+        
+        <div class="space-y-24">
+            <div class="flex flex-col md:flex-row items-center gap-8 relative">
+                <div class="flex-1 md:text-right">
+                    <h4 class="text-xl font-bold text-white mb-2 italic">Phase I: Certification Mastery</h4>
+                    <p class="text-gray-500 text-sm max-w-sm ml-auto">Completing the OffSec OSCP and Red Team Ops (CRTO) certifications to sharpen adversary simulation techniques.</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-red-600 border-4 border-black z-10"></div>
+                <div class="flex-1 mono text-red-500/40 font-bold text-2xl">01_2026</div>
+            </div>
+
+            <div class="flex flex-col md:flex-row-reverse items-center gap-8 relative">
+                <div class="flex-1 text-left">
+                    <h4 class="text-xl font-bold text-white mb-2 italic">Phase II: Tool Development</h4>
+                    <p class="text-gray-500 text-sm max-w-sm">Releasing an open-source Recon framework focused on identifying hidden API endpoints and leaked credentials in JS bundles.</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-gray-800 border-4 border-black z-10"></div>
+                <div class="flex-1 md:text-right mono text-gray-500/40 font-bold text-2xl">02_2027</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        
+
+       <section id="contact" class="mb-20 scroll-mt-32">
+    <div class="glass rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border-2 border-white/5">
+        <div class="bg-white/5 p-6 border-b border-white/5 flex items-center justify-between">
+            <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <span class="mono text-[10px] text-gray-500 tracking-[0.5em] uppercase font-bold">Secure_Contact_Gateway_v4.2</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            <div class="p-12 lg:border-r border-white/5">
+                <h3 class="text-4xl font-extrabold text-white mb-8 tracking-tighter">Initialize <br>Encrypted Connection.</h3>
+                <p class="text-gray-400 mb-12 max-w-sm leading-relaxed">
+                    To contact me for security audits or collaboration, use this terminal. 
+                    <br><br>
+                    <span class="text-red-500 font-bold italic">Note:</span> Your IP address and browser headers are logged for security purposes to prevent automated spamming.
+                </p>
+                <div class="space-y-6 mono text-xs">
+                    <div class="flex items-center gap-4"><span class="text-red-500 font-bold">ENCRYPTION:</span> <span class="text-green-500">AES-256 BIT</span></div>
+                    <div class="flex items-center gap-4"><span class="text-red-500 font-bold">SERVER_LOC:</span> <span>NODE_ASIA_01</span></div>
+                </div>
+            </div>
+            <div class="p-12 bg-black/20">
+                <form action="https://formspree.io/f/xdakynwv" method="POST" class="space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="mono text-[10px] text-gray-500 uppercase">Your Name</label>
+                            <input type="text" name="name" required placeholder="GUEST_USER" class="w-full px-4 py-3 rounded-lg bg-black/30 border border-white/10 text-white focus:border-red-500 outline-none transition-all">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="mono text-[10px] text-gray-500 uppercase">Your Email</label>
+                            <input type="email" name="email" required placeholder="IDENTITY@HOST.COM" class="w-full px-4 py-3 rounded-lg bg-black/30 border border-white/10 text-white focus:border-red-500 outline-none transition-all">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="mono text-[10px] text-gray-500 uppercase">Reason for Contact</label>
+                        <select name="subject" class="w-full px-4 py-3 rounded-lg bg-black/30 border border-white/10 text-white focus:border-red-500 outline-none transition-all mono text-xs">
+                            <option>Vulnerability Disclosure</option>
+                            <option>Security Audit Request</option>
+                            <option>Job Opportunity</option>
+                            <option>General Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="mono text-[10px] text-gray-500 uppercase">Detailed Message</label>
+                        <textarea name="message" rows="4" required placeholder="Provide technical details here..." class="w-full px-4 py-3 rounded-lg bg-black/30 border border-white/10 text-white focus:border-red-500 outline-none transition-all resize-none"></textarea>
+                    </div>
+                    <input type="text" name="_gotcha" style="display:none">
+                    
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-lg mono text-xs tracking-widest uppercase transition-all shadow-lg shadow-red-600/20 active:scale-95">
+                        Transmit_Payload()
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <footer class="p-20 text-center border-t border-white/5 bg-black/40">
+        <div class="mono text-[10px] text-gray-700 tracking-[0.8em] uppercase mb-4">
+            Encrypted // 2026 // Operational Status: Green
+        </div>
+        <div class="text-[9px] text-gray-800 mono">Built with Tailwind & JetBrains Mono for Security Professionals</div>
+    </footer>
+
+    <script>
+        // Form Interception Logic
+        document.getElementById('contactForm').onsubmit = (e) => {
+            e.preventDefault();
+            alert("SYSTEM: Transmission Sent. Response via encrypted channel expected within 24H.");
+        };
+
+        // Live Log Console Effect
+        console.log("%c REDCAT SECURITY %c v4.2.0 ", "background: #f00; color: #fff; font-weight: bold; border-radius: 3px 0 0 3px; padding: 2px 4px;", "background: #333; color: #fff; border-radius: 0 3px 3px 0; padding: 2px 4px;");
+        console.log("Analyzing page integrity...");
+        console.log("Done. Integrity Check: PASS");
+    </script>
+</body>
+</html>
