@@ -46,6 +46,9 @@
                 <a href="#checklist" class="hover:text-red-500 transition">03//CHECKLIST</a>
                 <a href="#intel" class="hover:text-red-500 transition">04//INTEL</a>
                 <a href="#contact" class="px-4 py-2 bg-red-500/10 border border-red-500/50 text-red-500 rounded hover:bg-red-500 hover:text-white transition">05//CONNECT</a>
+                <button onclick="initGravity()" class="fixed bottom-6 right-6 z-[200] bg-red-600 text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform mono text-[10px] font-bold">
+        [INITIALIZE_GRAVITY]
+    </button>
             </div>
         </div>
     </nav>
@@ -506,5 +509,63 @@
         console.log("Analyzing page integrity...");
         console.log("Done. Integrity Check: PASS");
     </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script>
+        let gravityEnabled = false;
+        
+        function initGravity() {
+            if (gravityEnabled) return;
+            gravityEnabled = true;
+
+            const Engine = Matter.Engine,
+                Render = Matter.Render,
+                Runner = Matter.Runner,
+                Bodies = Matter.Bodies,
+                Composite = Matter.Composite;
+
+            const engine = Engine.create();
+            const world = engine.world;
+
+            // Create a hidden canvas for physics
+            const render = Render.create({
+                element: document.body,
+                engine: engine,
+                options: { width: window.innerWidth, height: window.innerHeight, wireframes: false, background: 'transparent' }
+            });
+
+            // Turn all your sections into physics objects
+            const elements = document.querySelectorAll('.glass, h1, h2, .hero-text');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const body = Bodies.rectangle(
+                    rect.left + rect.width / 2,
+                    rect.top + rect.height / 2,
+                    rect.width,
+                    rect.height,
+                    { restitution: 0.5, friction: 0.1 }
+                );
+
+                el.style.position = 'fixed';
+                el.style.width = rect.width + 'px';
+                el.style.zIndex = '50';
+                
+                Matter.Events.on(engine, 'afterUpdate', () => {
+                    el.style.left = (body.position.x - rect.width / 2) + 'px';
+                    el.style.top = (body.position.y - rect.height / 2) + 'px';
+                    el.style.transform = `rotate(${body.angle}rad)`;
+                });
+
+                Composite.add(world, body);
+            });
+
+            // Add floor so they don't fall off screen
+            const ground = Bodies.rectangle(window.innerWidth/2, window.innerHeight, window.innerWidth, 60, { isStatic: true });
+            Composite.add(world, ground);
+
+            Runner.run(engine);
+        }
+    </script>
+
 </body>
 </html>
