@@ -58,8 +58,9 @@
         class="w-full h-full object-cover opacity-40" 
         preload="auto" 
         muted 
-        playsinline 
-        webkit-playsinline>
+        autoplay
+        loop
+        playsinline>
         <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-circuit-board-14065-large.mp4" type="video/mp4">
     </video>
 </div>
@@ -601,27 +602,29 @@
 
     const vid = document.getElementById("v0");
 
-    // This is the "Secret Sauce" to prevent lag:
-    // We wait for the video to be ready before initializing the scroll
-    vid.addEventListener('loadedmetadata', function() {
-        gsap.to(vid, {
-            currentTime: vid.duration,
-            ease: "none",
-            scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1, // This number handles the smoothness/lag
-                invalidateOnRefresh: true
-            }
+    function initVideoScrub() {
+        // Force the video to play and immediately pause to "prime" it
+        vid.play().then(() => {
+            vid.pause();
+            
+            gsap.to(vid, {
+                currentTime: vid.duration,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "body",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1.5,
+                }
+            });
+        }).catch(err => {
+            console.log("Video wait for interaction:", err);
         });
-    });
+    }
 
-    // Mobile Fix: Some phones need a 'touch' to allow video play/seek
-    window.addEventListener('touchstart', function() {
-        vid.play();
-        vid.pause();
-    }, { once: true });
+    // Wake up video on first scroll or click
+    window.addEventListener('scroll', initVideoScrub, { once: true });
+    window.addEventListener('click', initVideoScrub, { once: true });
 </script>
  
 
