@@ -587,10 +587,11 @@
 </script>
 
  
-<div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden bg-[#0b0d11] pointer-events-none">
-    <div id="cyber-grid" class="absolute top-1/2 left-1/2 w-[200%] h-[200%] border-[1px] border-red-900/20" 
-         style="transform: translate(-50%, -50%) perspective(500px) rotateX(60deg);">
-    </div>
+<div class="fixed top-0 left-0 w-full h-full -z-20 bg-[#0b0d11]">
+    <video id="bgVideo" autoplay muted loop playsinline class="w-full h-full object-cover opacity-30 brightness-50 contrast-125">
+        <source src="https://cdn.pixabay.com/video/2020/09/10/49557-458117215_tiny.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0b0d11] via-transparent to-[#0b0d11]"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -598,32 +599,22 @@
 
 <script>
     gsap.registerPlugin(ScrollTrigger);
+    const video = document.getElementById("bgVideo");
 
-    // Create the grid lines dynamically
-    const grid = document.getElementById('cyber-grid');
-    grid.style.backgroundImage = `
-        linear-gradient(to right, rgba(239, 68, 68, 0.1) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(239, 68, 68, 0.1) 1px, transparent 1px)
-    `;
-    grid.style.backgroundSize = '50px 50px';
-
-    // THE "ANTI-GRAVITY" SCROLL EFFECT
-    // As you scroll, the grid "warps" and "flies" toward you
-    gsap.to("#cyber-grid", {
-        backgroundPosition: "0 500px",
-        rotateX: 85,
-        scale: 1.5,
+    // This makes the video "react" to your scroll without lagging the site
+    gsap.to(video, {
         scrollTrigger: {
             trigger: "body",
             start: "top top",
             end: "bottom bottom",
-            scrub: 1, // Smoothness
+            scrub: true,
+            onUpdate: (self) => {
+                // Video speeds up as you scroll faster
+                video.playbackRate = 1 + (self.getVelocity() / 1000);
+                // Video blurs slightly as you go down for focus
+                video.style.filter = `blur(${self.progress * 5}px) brightness(0.4)`;
+            }
         }
-    });
-
-    // Fade in the effect once ready
-    window.addEventListener('load', () => {
-        gsap.from("#cyber-grid", { opacity: 0, duration: 2 });
     });
 </script>
 </body>
