@@ -587,12 +587,10 @@
 </script>
 
  
-<div id="loading-status" class="fixed top-20 left-1/2 -translate-x-1/2 z-[300] mono text-[10px] text-red-500 bg-black/80 px-4 py-2 rounded-full">
-    INITIALIZING_NEURAL_LINK...
-</div>
-
-<div class="fixed top-0 left-0 w-full h-full z-[-1] flex items-center justify-center pointer-events-none" style="background: #0b0d11;">
-    <canvas id="hero-lightpass" class="w-full h-full object-contain opacity-50"></canvas>
+<div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden bg-[#0b0d11] pointer-events-none">
+    <div id="cyber-grid" class="absolute top-1/2 left-1/2 w-[200%] h-[200%] border-[1px] border-red-900/20" 
+         style="transform: translate(-50%, -50%) perspective(500px) rotateX(60deg);">
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -600,55 +598,33 @@
 
 <script>
     gsap.registerPlugin(ScrollTrigger);
-    const canvas = document.getElementById("hero-lightpass");
-    const context = canvas.getContext("2d");
-    const loadingStatus = document.getElementById("loading-status");
 
-    canvas.width = 1158;
-    canvas.height = 770;
+    // Create the grid lines dynamically
+    const grid = document.getElementById('cyber-grid');
+    grid.style.backgroundImage = `
+        linear-gradient(to right, rgba(239, 68, 68, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(239, 68, 68, 0.1) 1px, transparent 1px)
+    `;
+    grid.style.backgroundSize = '50px 50px';
 
-    const frameCount = 50; // Reduced for faster testing
-    const images = [];
-    const sequence = { frame: 0 };
-
-    // Using a different stable sequence
-    const currentFrame = index => `https://www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a4af3b0/anim/sequence/large/01-hero-lightpass/${(index + 1).toString().padStart(4, '0')}.jpg`;
-
-    let loadedCount = 0;
-    for (let i = 0; i < frameCount; i++) {
-        const img = new Image();
-        img.onload = () => {
-            loadedCount++;
-            loadingStatus.innerText = `SYNCING_FRAMES: ${Math.round((loadedCount/frameCount)*100)}%`;
-            if (loadedCount === frameCount) {
-                loadingStatus.style.display = 'none';
-                render();
-            }
-        };
-        img.onerror = () => console.error("Failed to load image at index:", i);
-        img.src = currentFrame(i);
-        images.push(img);
-    }
-
-    gsap.to(sequence, {
-        frame: frameCount - 1,
-        snap: "frame",
-        ease: "none",
+    // THE "ANTI-GRAVITY" SCROLL EFFECT
+    // As you scroll, the grid "warps" and "flies" toward you
+    gsap.to("#cyber-grid", {
+        backgroundPosition: "0 500px",
+        rotateX: 85,
+        scale: 1.5,
         scrollTrigger: {
-            scrub: 0.5,
             trigger: "body",
             start: "top top",
             end: "bottom bottom",
-        },
-        onUpdate: render
+            scrub: 1, // Smoothness
+        }
     });
 
-    function render() {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        if (images[sequence.frame]) {
-            context.drawImage(images[sequence.frame], 0, 0);
-        }
-    }
+    // Fade in the effect once ready
+    window.addEventListener('load', () => {
+        gsap.from("#cyber-grid", { opacity: 0, duration: 2 });
+    });
 </script>
 </body>
 </html>
