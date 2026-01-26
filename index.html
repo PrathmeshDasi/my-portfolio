@@ -53,9 +53,9 @@
         </div>
     </nav>
 
-    <div id="video-container" class="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden">
-    <video id="v0" tabindex="0" autobuffer preload="auto" class="w-full h-full object-cover opacity-30">
-        <source type="video/mp4" src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-circuit-board-14065-large.mp4">
+    <div id="video-container" class="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden bg-black">
+    <video id="v0" tabindex="0" autobuffer preload="auto" muted playsinline class="w-full h-full object-cover opacity-40">
+        <source type="video/mp4" src="https://cdn.pixabay.com/video/2024/05/29/214391_tiny.mp4">
     </video>
 </div>
 
@@ -572,20 +572,24 @@
 
     const video = document.getElementById("v0");
 
-    // This ensures the video is ready to play
     video.onloadedmetadata = function() {
-        // Create the scroll-bound animation
         gsap.to(video, {
-            currentTime: video.duration, // Play to the end
+            currentTime: video.duration,
             scrollTrigger: {
-                trigger: "body",      // The whole page is the trigger
-                start: "top top",     // Start at the very top
-                end: "bottom bottom", // End at the very bottom
-                scrub: 2,             // 2 second "smoothness" delay
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 2,
                 ease: "none"
             }
         });
     };
+    
+    // This part ensures the video "activates" on mobile
+    window.addEventListener('touchstart', () => {
+        video.play();
+        video.pause();
+    }, { once: true });
 </script>
  
 
