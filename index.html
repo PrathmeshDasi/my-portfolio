@@ -56,11 +56,57 @@
         </div>
         
     </nav>
-    <div id="video-container" class="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden">
-    <video id="v0" tabindex="0" autobuffer preload="auto" class="w-full h-full object-cover opacity-30">
-        <source type="video/mp4" src="https://www.w3schools.com/html/mov_bbb.mp4">
-    </video>
-</div>
+    <canvas id="matrixCanvas" class="fixed top-0 left-0 w-full h-full -z-20 opacity-30"></canvas>
+
+<script>
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    let scrollSpeed = 1;
+
+    function draw() {
+        // Dark translucent background to create trail effect
+        ctx.fillStyle = "rgba(11, 13, 17, 0.1)"; 
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#ef4444"; // Your REDCAT theme red
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = characters.charAt(Math.floor(Math.random() * characters.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            // Increment drop position based on scrollSpeed
+            drops[i] += scrollSpeed;
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+        }
+    }
+
+    // Scroll Logic: The faster you scroll, the faster the "hack" happens
+    window.addEventListener('scroll', () => {
+        scrollSpeed = 2 + (window.scrollY / 100); 
+        // Reset speed after a delay
+        setTimeout(() => { scrollSpeed = 1; }, 500);
+    });
+
+    setInterval(draw, 33); // ~30 FPS for performance
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
     <div id="scroll-terminal" class="fixed bottom-10 left-10 z-[150] glass p-4 w-64 hidden lg:block border-l-2 border-red-600">
     <div class="flex items-center gap-2 mb-2">
         <div class="w-2 h-2 bg-red-500 animate-pulse rounded-full"></div>
