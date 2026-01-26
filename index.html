@@ -56,57 +56,11 @@
         </div>
         
     </nav>
-    <canvas id="matrixCanvas" class="fixed top-0 left-0 w-full h-full -z-20 opacity-30"></canvas>
 
-<script>
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-
-    let scrollSpeed = 1;
-
-    function draw() {
-        // Dark translucent background to create trail effect
-        ctx.fillStyle = "rgba(11, 13, 17, 0.1)"; 
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = "#ef4444"; // Your REDCAT theme red
-        ctx.font = fontSize + "px monospace";
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = characters.charAt(Math.floor(Math.random() * characters.length));
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-            // Increment drop position based on scrollSpeed
-            drops[i] += scrollSpeed;
-
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-        }
-    }
-
-    // Scroll Logic: The faster you scroll, the faster the "hack" happens
-    window.addEventListener('scroll', () => {
-        scrollSpeed = 2 + (window.scrollY / 100); 
-        // Reset speed after a delay
-        setTimeout(() => { scrollSpeed = 1; }, 500);
-    });
-
-    setInterval(draw, 33); // ~30 FPS for performance
-
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-</script>
+    <div class="fixed top-0 left-0 w-full h-full -z-20 flex items-center justify-center opacity-40">
+    <canvas id="hero-lightpass" class="max-w-[100vw] max-h-[100vh]"></canvas>
+</div>
+   
     <div id="scroll-terminal" class="fixed bottom-10 left-10 z-[150] glass p-4 w-64 hidden lg:block border-l-2 border-red-600">
     <div class="flex items-center gap-2 mb-2">
         <div class="w-2 h-2 bg-red-500 animate-pulse rounded-full"></div>
@@ -630,6 +584,102 @@
             }
         });
     };
+</script>
+
+ <canvas id="matrixCanvas" class="fixed top-0 left-0 w-full h-full -z-20 opacity-30"></canvas>
+
+<script>
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    let scrollSpeed = 1;
+
+    function draw() {
+        // Dark translucent background to create trail effect
+        ctx.fillStyle = "rgba(11, 13, 17, 0.1)"; 
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#ef4444"; // Your REDCAT theme red
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = characters.charAt(Math.floor(Math.random() * characters.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            // Increment drop position based on scrollSpeed
+            drops[i] += scrollSpeed;
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+        }
+    }
+
+    // Scroll Logic: The faster you scroll, the faster the "hack" happens
+    window.addEventListener('scroll', () => {
+        scrollSpeed = 2 + (window.scrollY / 100); 
+        // Reset speed after a delay
+        setTimeout(() => { scrollSpeed = 1; }, 500);
+    });
+
+    setInterval(draw, 33); // ~30 FPS for performance
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
+
+<script>
+const canvas = document.getElementById("hero-lightpass");
+const context = canvas.getContext("2d");
+
+canvas.width = 1158;
+canvas.height = 770;
+
+const frameCount = 147; // Number of frames in the sequence
+const currentFrame = index => (
+  `https://www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a4af3b0/anim/sequence/large/01-hero-lightpass/${index.toString().padStart(4, '0')}.jpg`
+);
+
+const images = [];
+const airpods = {
+  frame: 0
+};
+
+for (let i = 0; i < frameCount; i++) {
+  const img = new Image();
+  img.src = currentFrame(i);
+  images.push(img);
+}
+
+gsap.to(airpods, {
+  frame: frameCount - 1,
+  snap: "frame",
+  ease: "none",
+  scrollTrigger: {
+    scrub: 0.5,
+    trigger: "body",
+    start: "top top",
+    end: "bottom bottom"
+  },
+  onUpdate: render // use animation onUpdate instead of scrollTrigger's onUpdate
+});
+
+images[0].onload = render;
+
+function render() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(images[airpods.frame], 0, 0);
+}
 </script>
 </body>
 </html>
