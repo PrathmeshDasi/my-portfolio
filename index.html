@@ -50,12 +50,19 @@
                 <a href="#intel" class="hover:text-red-500 transition">04//INTEL</a>
                 <a href="#contact" class="px-4 py-2 bg-red-500/10 border border-red-500/50 text-red-500 rounded hover:bg-red-500 hover:text-white transition">05//CONNECT</a>
             </div>
-
-            
-            
         </div>
-        
     </nav>
+
+    <div id="video-box" class="fixed top-0 left-0 w-full h-full -z-20 bg-black">
+    <video id="v0" 
+        class="w-full h-full object-cover opacity-40" 
+        preload="auto" 
+        muted 
+        playsinline 
+        webkit-playsinline>
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-circuit-board-14065-large.mp4" type="video/mp4">
+    </video>
+</div>
 
     <div class="fixed top-0 left-0 w-full h-full -z-20 flex items-center justify-center opacity-30 pointer-events-none">
     <canvas id="hero-lightpass" style="width: 100%; height: auto; max-width: 800px;"></canvas>
@@ -586,36 +593,37 @@
     };
 </script>
 
- 
-<div class="fixed top-0 left-0 w-full h-full -z-20 bg-[#0b0d11]">
-    <video id="bgVideo" autoplay muted loop playsinline class="w-full h-full object-cover opacity-30 brightness-50 contrast-125">
-        <source src="https://cdn.pixabay.com/video/2020/09/10/49557-458117215_tiny.mp4" type="video/mp4">
-    </video>
-    <div class="absolute inset-0 bg-gradient-to-b from-[#0b0d11] via-transparent to-[#0b0d11]"></div>
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
 <script>
     gsap.registerPlugin(ScrollTrigger);
-    const video = document.getElementById("bgVideo");
 
-    // This makes the video "react" to your scroll without lagging the site
-    gsap.to(video, {
-        scrollTrigger: {
-            trigger: "body",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: true,
-            onUpdate: (self) => {
-                // Video speeds up as you scroll faster
-                video.playbackRate = 1 + (self.getVelocity() / 1000);
-                // Video blurs slightly as you go down for focus
-                video.style.filter = `blur(${self.progress * 5}px) brightness(0.4)`;
+    const vid = document.getElementById("v0");
+
+    // This is the "Secret Sauce" to prevent lag:
+    // We wait for the video to be ready before initializing the scroll
+    vid.addEventListener('loadedmetadata', function() {
+        gsap.to(vid, {
+            currentTime: vid.duration,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1, // This number handles the smoothness/lag
+                invalidateOnRefresh: true
             }
-        }
+        });
     });
+
+    // Mobile Fix: Some phones need a 'touch' to allow video play/seek
+    window.addEventListener('touchstart', function() {
+        vid.play();
+        vid.pause();
+    }, { once: true });
 </script>
+ 
+
 </body>
 </html>
