@@ -46,9 +46,6 @@
                 <a href="#checklist" class="hover:text-red-500 transition">03//CHECKLIST</a>
                 <a href="#intel" class="hover:text-red-500 transition">04//INTEL</a>
                 <a href="#contact" class="px-4 py-2 bg-red-500/10 border border-red-500/50 text-red-500 rounded hover:bg-red-500 hover:text-white transition">05//CONNECT</a>
-                <button onclick="initGravity()" class="fixed bottom-6 right-6 z-[200] bg-red-600 text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform mono text-[10px] font-bold">
-        [INITIALIZE_GRAVITY]
-    </button>
             </div>
         </div>
     </nav>
@@ -510,62 +507,61 @@
         console.log("Done. Integrity Check: PASS");
     </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-    <script>
-        let gravityEnabled = false;
-        
-        function initGravity() {
-            if (gravityEnabled) return;
-            gravityEnabled = true;
+<canvas id="neuralCanvas" class="fixed top-0 left-0 w-full h-full -z-10 opacity-40 pointer-events-none"></canvas>
+<script>
+    const canvas = document.getElementById('neuralCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
 
-            const Engine = Matter.Engine,
-                Render = Matter.Render,
-                Runner = Matter.Runner,
-                Bodies = Matter.Bodies,
-                Composite = Matter.Composite;
+    function initCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
 
-            const engine = Engine.create();
-            const world = engine.world;
-
-            // Create a hidden canvas for physics
-            const render = Render.create({
-                element: document.body,
-                engine: engine,
-                options: { width: window.innerWidth, height: window.innerHeight, wireframes: false, background: 'transparent' }
-            });
-
-            // Turn all your sections into physics objects
-            const elements = document.querySelectorAll('.glass, h1, h2, .hero-text');
-            elements.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                const body = Bodies.rectangle(
-                    rect.left + rect.width / 2,
-                    rect.top + rect.height / 2,
-                    rect.width,
-                    rect.height,
-                    { restitution: 0.5, friction: 0.1 }
-                );
-
-                el.style.position = 'fixed';
-                el.style.width = rect.width + 'px';
-                el.style.zIndex = '50';
-                
-                Matter.Events.on(engine, 'afterUpdate', () => {
-                    el.style.left = (body.position.x - rect.width / 2) + 'px';
-                    el.style.top = (body.position.y - rect.height / 2) + 'px';
-                    el.style.transform = `rotate(${body.angle}rad)`;
-                });
-
-                Composite.add(world, body);
-            });
-
-            // Add floor so they don't fall off screen
-            const ground = Bodies.rectangle(window.innerWidth/2, window.innerHeight, window.innerWidth, 60, { isStatic: true });
-            Composite.add(world, ground);
-
-            Runner.run(engine);
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vmX = (Math.random() - 0.5) * 0.5;
+            this.vmY = (Math.random() - 0.5) * 0.5;
         }
-    </script>
+        update() {
+            this.x += this.vmX;
+            this.y += this.vmY;
+            if (this.x < 0 || this.x > canvas.width) this.vmX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vmY *= -1;
+        }
+    }
+
+    function createParticles() {
+        for (let i = 0; i < 60; i++) particles.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#ef4444'; // Matches your REDCAT theme
+        ctx.lineWidth = 0.2;
+        
+        particles.forEach((p, i) => {
+            p.update();
+            particles.slice(i + 1).forEach(p2 => {
+                let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                if (dist < 150) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                }
+            });
+        });
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', initCanvas);
+    initCanvas();
+    createParticles();
+    animate();
+</script>
 
 </body>
 </html>
