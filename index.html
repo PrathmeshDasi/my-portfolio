@@ -40,6 +40,18 @@
             <div class="mono font-extrabold text-red-500 text-xl flex items-center gap-3">
                 <span class="animate-pulse">●</span> PENTESTER
             </div>
+            <div id="scroll-terminal" class="fixed bottom-10 left-10 z-[150] glass p-4 w-64 hidden lg:block border-l-2 border-red-600">
+    <div class="flex items-center gap-2 mb-2">
+        <div class="w-2 h-2 bg-red-500 animate-pulse rounded-full"></div>
+        <span class="mono text-[10px] text-gray-400">SESSION_PROGRESS</span>
+    </div>
+    <div id="terminal-text" class="mono text-[11px] text-red-500 leading-tight">
+        > SYSTEM_IDLE
+    </div>
+    <div class="w-full h-1 bg-white/5 mt-3">
+        <div id="scroll-bar" class="h-full bg-red-600 transition-all duration-300" style="width: 0%"></div>
+    </div>
+</div>
             <div class="hidden xl:flex gap-10 text-[10px] mono uppercase tracking-widest text-gray-400">
                 <a href="#hero" class="hover:text-red-500 transition">01//INIT</a>
                 <a href="#achievements" class="hover:text-red-500 transition">02//RECORDS</a>
@@ -507,60 +519,34 @@
         console.log("Done. Integrity Check: PASS");
     </script>
 
-<canvas id="neuralCanvas" class="fixed top-0 left-0 w-full h-full -z-10 opacity-40 pointer-events-none"></canvas>
 <script>
-    const canvas = document.getElementById('neuralCanvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-
-    function initCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vmX = (Math.random() - 0.5) * 0.5;
-            this.vmY = (Math.random() - 0.5) * 0.5;
-        }
-        update() {
-            this.x += this.vmX;
-            this.y += this.vmY;
-            if (this.x < 0 || this.x > canvas.width) this.vmX *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.vmY *= -1;
-        }
-    }
-
-    function createParticles() {
-        for (let i = 0; i < 60; i++) particles.push(new Particle());
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = '#ef4444'; // Matches your REDCAT theme
-        ctx.lineWidth = 0.2;
+    window.addEventListener('scroll', () => {
+        const terminalText = document.getElementById('terminal-text');
+        const scrollBar = document.getElementById('scroll-bar');
         
-        particles.forEach((p, i) => {
-            p.update();
-            particles.slice(i + 1).forEach(p2 => {
-                let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                if (dist < 150) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.stroke();
-                }
-            });
-        });
-        requestAnimationFrame(animate);
-    }
+        // Calculate scroll percentage
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
 
-    window.addEventListener('resize', initCanvas);
-    initCanvas();
-    createParticles();
-    animate();
+        // Update Progress Bar
+        scrollBar.style.width = scrolled + "%";
+
+        // Logic for changing text based on scroll position (The "Coffee Effect")
+        if (scrolled < 10) {
+            terminalText.innerHTML = "> INITIALIZING_STRIKE_SUITE...";
+        } else if (scrolled < 30) {
+            terminalText.innerHTML = "> BYPASSING_FIREWALL_LAYERS...";
+        } else if (scrolled < 50) {
+            terminalText.innerHTML = "> INJECTING_PAYLOAD_V4.2...";
+        } else if (scrolled < 70) {
+            terminalText.innerHTML = "> EXTRACTING_ENCRYPTED_DATA...";
+        } else if (scrolled < 90) {
+            terminalText.innerHTML = "> WIPING_LOG_FOOTPRINTS...";
+        } else {
+            terminalText.innerHTML = "> MISSION_ACCOMPLISHED.";
+        }
+    });
 </script>
 
 </body>
